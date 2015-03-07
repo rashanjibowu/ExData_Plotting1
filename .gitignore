@@ -4,3 +4,8 @@ data/
 
 # figure folder
 figure/
+
+# R hidden files
+.RData
+.Rapp.history
+.Rhistory

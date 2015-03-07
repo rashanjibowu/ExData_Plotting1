@@ -3,14 +3,34 @@
 # Loads raw data into memory
 loadData <- function() {
 
-	# Source
-	sourceFile <- c("./tmpdata/household_power_consumption.txt")
+	# Source URL
+	url <- c("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip")
+
+	# Paths
+	path.dataDir <- c("./data/")
+	path.rawData <- paste0(path.dataDir, "household_power_consumption.txt")
+	path.destFile <- paste0(path.dataDir, "hpc.zip")
+
+	# Download and unzip file if it doesn't already exist
+	if (!file.exists(path.rawData)) {
+
+		# create the data directory if it doesn't already exist
+		dir.create(path.dataDir)
+
+		# Download the file if necessary
+		if (!file.exists(path.destFile)) {
+			download.file(url, destfile = path.destFile, method = "curl")
+		}
+
+		# unzip file
+		unzip(path.destFile, exdir = path.dataDir)
+	}
 
 	# set colclasses
 	colClasses <- c("character", "character", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric", "numeric")
 
 	# read file into memory
-	hpc <- read.table(sourceFile, header = TRUE, sep = ";", colClasses = colClasses, na.strings = "?")
+	hpc <- read.table(path.rawData, header = TRUE, sep = ";", colClasses = colClasses, na.strings = "?")
 
 	if (is.null(hpc)) stop("Error reading file")
 
